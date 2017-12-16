@@ -21,6 +21,33 @@ This endpoint returns:
 
 The overall response time will be around the same as the longest dependency took to respond. Keeping in mind that to resolve the country the API first needs to get the external IP address. It does so in two calls to external services.
 
+### Running
+
+.NET Core 2 SDK is required to build and run:
+
+#### To run it in development mode
+
+```shell
+git clone https://github.com/bruno-garcia/HttpProxyControl.git
+cd HttpProxyControl
+dotnet run
+
+```
+
+An example of setting it up on Linux with iptables:
+
+```shell
+git clone https://github.com/bruno-garcia/HttpProxyControl.git
+cd HttpProxyControl
+# choose a port
+port=31337
+iptables -A INPUT -i eth0 -p tcp --dport $port -j ACCEPT
+export ASPNETCORE_URLS=http://*:$port
+dotnet publish HttpProxyControl.sln -c Release -o out
+dotnet out/HttpProxyInfo.dll
+
+```
+
 Example call:
 ```shell
 curl -X GET --header 'Accept: application/json' 'http://server/proxy/info/proxy.lan%3A8118'
